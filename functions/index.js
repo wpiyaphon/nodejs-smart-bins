@@ -17,8 +17,13 @@ exports.onCapacityChanged = functions.database
     const binName = after.name;
     let timeEdited = Date.now();
 
+    if ((before.capacity >= before.maxCapacity * (75 / 100)) && (after.capacity >= after.maxCapacity * (75 / 100))) {
+      console.log("This is already notified");
+      return change.after.ref.update({ timeEdited });
+    }
+
     if (
-      after.capacity > after.maxCapacity * (75 / 100) &&
+      after.capacity >= after.maxCapacity * (75 / 100) &&
       after.capacity <= after.maxCapacity
     ) {
       const title = "Bin has reached max capacity";
